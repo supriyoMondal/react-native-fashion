@@ -6,9 +6,14 @@ const { width, height } = Dimensions.get('screen');
 export const SLIDE_HEIGHT = .61 * height;
 
 const Slide = ({ label, right }) => {
+    const transform = [
+        { translateY: (SLIDE_HEIGHT - 100) / 2 },
+        { translateX: (right ? 1 : -1) * (width - 100) / 2 },
+        { rotate: right ? '-90deg' : '90deg' }
+    ]
     return (
         <View style={styles.container}>
-            <View style={styles.labelContainer}>
+            <View style={{ ...styles.labelContainer, transform }}>
                 <Text style={styles.label}>{label}</Text>
             </View>
         </View>
@@ -28,11 +33,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     labelContainer: {
-        backgroundColor: 'red',
         justifyContent: 'center',
-        height: 100,
-        transform: [
-            { translateY: (SLIDE_HEIGHT - 100) / 2 }
-        ]
+        height: 100
     }
 })
