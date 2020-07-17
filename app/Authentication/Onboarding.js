@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { StyleSheet, Text, View, ScrollView, Dimensions, Animated, } from 'react-native'
 import Slide, { SLIDE_HEIGHT } from '../components/Slide'
 import SubSlides from '../components/SubSlides';
@@ -16,7 +16,7 @@ const slides = [
 ]
 
 const Onboarding = () => {
-
+    const scroll = useRef();
     const animatedValue = new Animated.Value(0);
     const backgroundColor = animatedValue.interpolate({
         inputRange: slides.map((_, i) => i * width),
@@ -31,12 +31,13 @@ const Onboarding = () => {
                 }
             }
         }
-    ])
+    ], { useNativeDriver: false })
 
     return (
         <View style={styles.container}>
             <Animated.View style={{ ...styles.slider, backgroundColor: backgroundColor }}>
                 <Animated.ScrollView
+                    ref={scroll}
                     horizontal
                     snapToInterval={width}
                     decelerationRate="fast"
@@ -59,7 +60,14 @@ const Onboarding = () => {
                     ]
                 }} >
                     {slides.map((slide, i) =>
-                        (<SubSlides key={i} last={i == slides.length - 1}
+                        (<SubSlides key={i}
+                            onPress={() => {
+                                if (scroll.current) {
+                                    console.log(width * i)
+                                    scroll.current.scrollTo({ x: width * (i + 1), animated: true })
+                                }
+                            }}
+                            last={i == slides.length - 1}
                             title={slide.subLabel}
                             subTitle={slide.description}
                         />)

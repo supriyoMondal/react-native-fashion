@@ -1,13 +1,15 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+import Button from './Button'
 
-const SubSlides = ({ title, subTitle, last }) => {
+const SubSlides = ({ title, subTitle, last, onPress = () => { } }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.subTitle}>{title}</Text>
             <Text style={styles.description}>{subTitle}</Text>
-            <Button title={last ? "Let's get started" : '          Next          '}
-                color={last ? '#f3f3f4' : 'grey'}
+            <Button label={last ? "Let's get started" : "Next"}
+                variant={last ? 'primary' : 'default'}
+                onPress={onPress}
             />
         </View>
     )
